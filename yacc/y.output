@@ -1,0 +1,64 @@
+   0  $accept : date $end
+
+   1  date :
+   2       | NUMBER SLASH NUMBER SLASH NUMBER NL
+
+state 0
+	$accept : . date $end  (0)
+	date : .  (1)
+
+	NUMBER  shift 1
+	$end  reduce 1
+
+	date  goto 2
+
+
+state 1
+	date : NUMBER . SLASH NUMBER SLASH NUMBER NL  (2)
+
+	SLASH  shift 3
+	.  error
+
+
+state 2
+	$accept : date . $end  (0)
+
+	$end  accept
+
+
+state 3
+	date : NUMBER SLASH . NUMBER SLASH NUMBER NL  (2)
+
+	NUMBER  shift 4
+	.  error
+
+
+state 4
+	date : NUMBER SLASH NUMBER . SLASH NUMBER NL  (2)
+
+	SLASH  shift 5
+	.  error
+
+
+state 5
+	date : NUMBER SLASH NUMBER SLASH . NUMBER NL  (2)
+
+	NUMBER  shift 6
+	.  error
+
+
+state 6
+	date : NUMBER SLASH NUMBER SLASH NUMBER . NL  (2)
+
+	NL  shift 7
+	.  error
+
+
+state 7
+	date : NUMBER SLASH NUMBER SLASH NUMBER NL .  (2)
+
+	.  reduce 2
+
+
+5 terminals, 2 nonterminals
+3 grammar rules, 8 states
